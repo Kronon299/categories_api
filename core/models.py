@@ -2,8 +2,8 @@ from django.db import models
 
 
 class Category(models.Model):
-    parentCategory = models.ForeignKey('self', blank=True, null=True, related_name='subcategories', on_delete=models.CASCADE)
-    name = models.CharField(max_length=200)
+    parent_category = models.ForeignKey('self', blank=True, null=True, related_name='subcategories', on_delete=models.CASCADE)
+    name = models.CharField(max_length=200, unique=True)
 
     class Meta:
         verbose_name = "Category"
