@@ -16,7 +16,7 @@ class RecursiveSerializer(serializers.Serializer):
         return serializer.data
 
 
-class CategorySerializer(serializers.ModelSerializer):
+class CategoriesSerializer(serializers.ModelSerializer):
     """Categories list"""
     children = RecursiveSerializer(many=True)
 
@@ -24,3 +24,12 @@ class CategorySerializer(serializers.ModelSerializer):
         list_serializer_class = FilterCategoryListSerializer
         model = Category
         fields = ('name', 'children')
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    """Detail category"""
+
+
+    class Meta:
+        model = Category
+        fields = ('id', 'name', 'parents', 'children', 'siblings')

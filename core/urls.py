@@ -1,8 +1,9 @@
 from django.urls import path
-from .views import CategoryView
+from .views import CategoriesView, CategoryDetailView
 app_name = "categories"
 
 
 urlpatterns = [
-    path('', CategoryView.as_view()),
+    path('', CategoriesView.as_view()),
+    path('<int:pk>/', CategoryDetailView.as_view()),
 ]
