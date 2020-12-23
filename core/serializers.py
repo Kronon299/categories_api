@@ -2,18 +2,17 @@ from rest_framework import serializers
 from .models import Category
 
 
-class CategorySerializer(serializers.Serializer):
-    id = serializers.IntegerField()
-    name = serializers.CharField()
-    parent_category = serializers.CharField()
+class RecursiveSerializer(serializers.Serializer):
+    """Subcategories recursive output"""
+    def to_representation(self, instance):
+        serializer = self.parent.parent.__class__(instance, context=self.context)
+        return serializer.data
 
-    def create(self, validated_data):
-        return Category.objects.create(**validated_data)
 
-# class CategorySerializer(serializers.ModelSerializer):
-#     parentCategory = serializers.PrimaryKeyRelatedField()
-#     subcategories = SubCategorySerializer()
-#
-#     class Meta:
-#         model = Category
-#         fields = ('parentCategory', 'name', 'subcategories')
+class CategorySerializer(serializers.ModelSerializer):
+    """Categories list"""
+    children = RecursiveSerializer(many=True)
+
+    class Meta:
+        model = Category
+        fields = ('name', 'children')
